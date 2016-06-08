@@ -1,7 +1,6 @@
 require 'sinatra/base'
 require 'future'
 require 'json'
-require 'singleton'
 
 # Services
 require_relative 'app/services/authentication'
