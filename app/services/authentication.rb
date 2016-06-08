@@ -4,12 +4,16 @@ module Services
   class Authentication < Base
     ENDPOINT = 'http://localhost:1234/'
   
-    def self.session
-      new.session
+    def verify_token(token)
+      get("session/#{token}", {})
     end
-  
-    def session
-      get('session', {})
+
+    def login(username, password)
+      post('session', { username: username, password: password })
+    end
+
+    def logout(token)
+      delete('session', { token: token })
     end
   end
 end
