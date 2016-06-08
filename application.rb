@@ -1,4 +1,4 @@
-require 'sinatra'
+require 'sinatra/base'
 require 'future'
 require 'json'
 require 'singleton'
@@ -9,12 +9,15 @@ require_relative 'app/services/messaging'
 require_relative 'app/services/notification'
 
 # Controllers
-require_relative 'app/controllers/sessions'
-require_relative 'app/controllers/message_threads'
-require_relative 'app/controllers/messages'
-require_relative 'app/controllers/notifications'
+require_relative 'app/controllers/sessions_controller'
+require_relative 'app/controllers/message_threads_controller'
+require_relative 'app/controllers/messages_controller'
+require_relative 'app/controllers/notifications_controller'
 
-module Application
+class SinatraApplication < Sinatra::Base
+end
+
+module Molecule
   @routes = []
 
   def self.routes
@@ -26,7 +29,13 @@ module Application
   end
 
   def self.install_routes
-    puts 'Installing routes ...'
+    routes.each do |route|
+      SinatraApplication.send(route.http_method, route.path) do
+        Kernel.const_get((route.controller + '_controller').split('_').collect(&:capitalize).join)
+          .new(params)
+          .send(route.action)
+      end
+    end
   end
 
   private
@@ -69,20 +78,25 @@ class Route
   end
 end
 
-Application.define_routes do
-  get    '/sessions/:id',                                 to: 'sessions#show'
-  post   '/sessions',                                     to: 'sessions#create'
-  delete '/sessions/:id',                                 to: 'sessions#destroy'
+Molecule.define_routes do
+  get    '/sessions/:id',                                    to: 'sessions#show'
+  post   '/sessions',                                        to: 'sessions#create'
+  delete '/sessions/:id',                                    to: 'sessions#destroy'
 
-  get    '/message_threads',                              to: 'message_threads#index'
-  get    '/message_threads/:id',                          to: 'message_threads#show'
-  post   '/message_threads',                              to: 'message_threads#create'
-  delete '/message_threads/:id',                          to: 'message_threads#destroy'
+  get    '/message_threads',                                 to: 'message_threads#index'
+  get    '/message_threads/:id',                             to: 'message_threads#show'
+  post   '/message_threads',                                 to: 'message_threads#create'
+  delete '/message_threads/:id',                             to: 'message_threads#destroy'
 
-  get    '/message_threads/:message_thread_id/messages',  to: 'messages#index'
-  get    '/messages/:id',                                 to: 'messages#show'
-  post   '/messages',                                     to: 'messages#create'
-  delete '/messages/:id',                                 to: 'messages#destroy'
+  get    '/message_threads/:message_thread_id/messages',     to: 'messages#index'
+  get    '/message_threads/:message_thread_id/messages/:id', to: 'messages#show'
+  post   '/message_threads/:message_thread_id/messages',     to: 'messages#create'
+  delete '/message_threads/:message_thread_id/messages/:id', to: 'messages#destroy'
+
+  get    '/notifications',                                   to: 'notifications#index'
+  get    '/notifications/:id',                               to: 'notifications#show'
 end
 
-Application.install_routes
+Molecule.install_routes
+
+SinatraApplication.run!
