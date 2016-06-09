@@ -8,3 +8,4 @@ Roadmap:
 * Implement non blocking request FRP
 * Implement integrated monitoring
 * Implement contract testing
+* Implement service discovery
