@@ -28,8 +28,12 @@ module Molecule
     get '/api/routes' do
       Molecule.routes.map do |route|
         {
-          http_method: route.http_method,
-          path: route.path
+          request: {
+            method: route.http_method,
+            path: route.path
+          },
+          response: {
+          }
         }
       end.to_json
     end
