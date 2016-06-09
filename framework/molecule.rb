@@ -37,6 +37,14 @@ module Molecule
     define_route(:post, path, to: to)
   end
 
+  def self.put(path, to:)
+    define_route(:put, path, to: to)
+  end
+
+  def self.patch(path, to:)
+    define_route(:patch, path, to: to)
+  end
+
   def self.delete(path, to:)
     define_route(:delete, path, to: to)
   end
