@@ -25,6 +25,14 @@ module Molecule
   end
 
   class SinatraApplication < Sinatra::Base
+    get '/api/routes' do
+      Molecule.routes.map do |route|
+        {
+          http_method: route.http_method,
+          path: route.path
+        }
+      end.to_json
+    end
   end
 
   private
