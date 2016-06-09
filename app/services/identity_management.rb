@@ -1,7 +1,7 @@
 require_relative 'base'
 
 module Services
-  class Authentication < Base
+  class IdentityManagement < Base
     ENDPOINT = 'http://localhost:1234/'
   
     def verify_token(token)
