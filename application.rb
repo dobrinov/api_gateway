@@ -3,12 +3,13 @@ require 'future'
 require 'json'
 
 # Services
-require_relative 'app/services/authentication'
+require_relative 'app/services/identity_management'
 require_relative 'app/services/messaging'
 require_relative 'app/services/notification'
 
 # Controllers
 require_relative 'app/controllers/sessions_controller'
+require_relative 'app/controllers/users_controller'
 require_relative 'app/controllers/message_threads_controller'
 require_relative 'app/controllers/messages_controller'
 require_relative 'app/controllers/notifications_controller'

@@ -1,4 +1,9 @@
 Molecule.define_routes do
+  get    '/users/:id',                                       to: 'users#show'
+  post   '/users',                                           to: 'users#create'
+  put    '/users/:id',                                       to: 'users#update'
+  delete '/users/:id',                                       to: 'users#destroy'
+
   get    '/sessions/:id',                                    to: 'sessions#show'
   post   '/sessions',                                        to: 'sessions#create'
   delete '/sessions/:id',                                    to: 'sessions#destroy'

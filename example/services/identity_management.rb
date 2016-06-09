@@ -29,3 +29,15 @@ delete '/session' do
     status 403
   end
 end
+
+post '/users' do
+end
+
+get '/users/:id' do
+end
+
+put '/users/:id' do
+end
+
+delete '/users/:id' do
+end
