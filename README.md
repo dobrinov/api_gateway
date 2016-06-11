@@ -9,3 +9,8 @@ Roadmap:
 * Implement integrated monitoring
 * Implement contract testing
 * Implement service discovery
+* Renred JSONs with views
+
+Microservice problems:
+* Hard to test
+* Increased complexity
