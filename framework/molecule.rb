@@ -17,6 +17,8 @@ module Molecule
   def self.install_routes
     routes.each do |route|
       SinatraApplication.send(route.http_method, route.path) do
+        content_type 'application/json'
+
         Kernel.const_get((route.controller + '_controller').split('_').collect(&:capitalize).join)
           .new(params)
           .send(route.action)
@@ -26,6 +28,8 @@ module Molecule
 
   class SinatraApplication < Sinatra::Base
     get '/api/routes' do
+      content_type 'application/json'
+
       Molecule.routes.map do |route|
         {
           request: {

@@ -2,7 +2,8 @@ require_relative 'base_controller'
 
 class UsersController < BaseController
   def show
-    "#{__method__} called of #{self.class} with parameters #{params}"
+    user = ::Services::IdentityManagement.users.find(params[:id])
+    user
   end
 
   def create
