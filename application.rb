@@ -21,4 +21,4 @@ require_relative 'framework/route'
 # Routes
 require_relative 'config/routes'
 
-Molecule.run!
+Molecule::ApiGateway.run!
