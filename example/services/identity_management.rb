@@ -17,7 +17,7 @@ DB = {
     {
       id: 1,
       user_id: 1,
-      token: 'p3NPNNY8oz7Jn-lylbMVXQ§'
+      token: SecureRandom.urlsafe_base64(20)
     }
   ]
 }
@@ -32,17 +32,21 @@ end
 
 post '/sessions' do
   if params[:email] == DB[:users][0][:email] && params[:password] == DB[:users][0][:password_digest]
-    { token: DB[:sessions][0][:token] }.to_json
+    status 201
+    session = { token: DB[:sessions][0][:token] }
+    session.to_json
   else
     status 401
   end
 end
 
 delete '/sessions/:id' do
-  if params[:token] == DB[:sessions][0][:token]
+  p params[:id]
+  p DB[:sessions][0][:token]
+  if params[:id] == DB[:sessions][0][:token]
     status 200
   else
-    status 403
+    status 401
   end
 end
 

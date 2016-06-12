@@ -5,47 +5,86 @@ module Services
     base_uri 'localhost:1234'
 
     def self.users
-      User.new
+      User
     end
 
     def self.sessions
-      Session.new
+      Session
     end
   end
 
   class User < IdentityManagement
     base_uri "#{base_uri}/users"
 
-    def find(id)
-      JSON.parse(self.class.get("/#{id}")).to_json
+    def self.find(id)
+      response = get("/#{id}")
+      new(JSON.parse(response.body))
     end
 
-    def create(first_name, last_name, email, password, password_confirmation)
-      self.class.post('')
+    def self.create(first_name, last_name, email, password, password_confirmation)
+      #TODO: Pass parameters
+      response = post('')
+
+      if response.code == 201
+        new(JSON.parse(response.body))
+      else
+        false
+      end
     end
 
     def update(first_name, last_name, email, password, password_confirmation)
-      self.class.put('')
+      #TODO: Pass parameters
+      response = self.class.put('')
+
+      if response.code == 200
+        true
+      else
+        false
+      end
     end
 
-    def destroy(id)
-      self.class.delete("/#{id}")
+    def destroy
+      response = self.class.delete("/#{id}")
+
+      if response.code == 200
+        true
+      else
+        false
+      end
     end
   end
 
   class Session < IdentityManagement
     base_uri "#{base_uri}/sessions"
 
-    def verify(token)
-      self.class.get("/#{token}")
+    def valid?
+      response = self.class.get("/#{token}")
+
+      if response.code == 200
+        true
+      else
+        false
+      end
     end
 
-    def create(email, password)
-      self.class.post('', { body: { email: email,  password: password }})
+    def self.create(email, password)
+      response = post('', { body: { email: email,  password: password }})
+
+      if response.code == 201
+        new(JSON.parse(response.body))
+      else
+        false
+      end
     end
 
-    def destroy(token)
-      self.class.delete("/#{token}")
+    def destroy
+      response = self.class.delete("/#{token}")
+
+      if response.code == 200
+        true
+      else
+        false
+      end
     end
   end
 end

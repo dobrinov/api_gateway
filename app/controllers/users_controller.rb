@@ -3,7 +3,7 @@ require_relative 'base_controller'
 class UsersController < BaseController
   def show
     user = ::Services::IdentityManagement.users.find(params[:id])
-    user
+    user.to_json
   end
 
   def create
